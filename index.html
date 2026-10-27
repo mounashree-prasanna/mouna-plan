@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mouna’s Plan</title>
+<style>
+:root{--bg:#f4f3f8;--card:#fff;--ink:#1f1b2e;--mut:#6b6580;--acc:#5b3fa0;--ai:#fff;--soft:#ebe6f6;--line:#e1dded;--warn:#c2410c;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15121f;--card:#1f1b2e;--ink:#f1eefb;--mut:#a49cc0;--acc:#b9a2ff;--ai:#15121f;--soft:#2c2644;--line:#332d4d;--warn:#fb923c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15121f;--card:#1f1b2e;--ink:#f1eefb;--mut:#a49cc0;--acc:#b9a2ff;--ai:#15121f;--soft:#2c2644;--line:#332d4d;--warn:#fb923c;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 ui-rounded,"SF Pro Rounded",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:92px}
+main{max-width:640px;margin:0 auto;padding:18px 16px}
+h1{font-size:30px;line-height:1.1;letter-spacing:-.02em;margin:6px 0 4px;font-weight:800}
+h2{font-size:18px;margin:0 0 8px}
+p{margin:6px 0}ul{margin:6px 0;padding-left:20px}li{margin:2px 0}
+.mut{color:var(--mut);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.chip{background:var(--soft);color:var(--acc);border-radius:99px;padding:3px 10px;font-size:13px;font-weight:700;white-space:nowrap}
+.hero{background:var(--acc);color:var(--ai);border-radius:22px;padding:20px;margin:14px 0}
+.hero b{font-size:56px;line-height:1;letter-spacing:-.03em;font-weight:800}
+.hero span{font-size:17px;margin-left:6px}
+.bar{height:10px;background:var(--soft);border-radius:9px;overflow:hidden;margin:10px 0}
+.bar i{display:block;height:100%;background:var(--acc);border-radius:9px;transition:width .3s}
+.hero .bar{background:rgba(255,255,255,.28)}.hero .bar i{background:var(--ai)}
+.chk{display:flex;gap:12px;align-items:center;min-height:48px;border-top:1px solid var(--line);cursor:pointer}
+.chk:first-of-type{border-top:0}
+.chk input{width:24px;height:24px;accent-color:var(--acc);flex:none}
+.pills{display:flex;gap:8px;overflow-x:auto;padding:4px 0;-webkit-overflow-scrolling:touch}
+.pill{flex:none;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:10px 16px;font:inherit;font-size:15px;min-height:44px}
+.pill.on{background:var(--acc);color:var(--ai);border-color:var(--acc);font-weight:700}
+.ex{padding:12px 0;border-top:1px solid var(--line)}.ex:first-of-type{border-top:0}
+.ex a{color:var(--acc);font-size:14px;font-weight:600;margin-right:14px;text-decoration:none;display:inline-block;padding:6px 0}
+details.card summary{cursor:pointer;list-style:none;min-height:44px}
+details.card summary::-webkit-details-marker{display:none}
+details.card summary b{display:block}
+details[open] summary{margin-bottom:6px}
+.fld{display:block;margin:10px 0}.fld span{display:block;font-size:14px;color:var(--mut);margin-bottom:4px}
+input[type=number],input[type=date],input[type=text],select,textarea{width:100%;font:inherit;font-size:16px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{width:100%;min-height:50px;border:0;border-radius:14px;background:var(--acc);color:var(--ai);font:inherit;font-weight:800;font-size:17px;margin-top:8px}
+.hist{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:12px 0;font:inherit;color:var(--ink)}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+nav button{flex:1;min-height:52px;border:0;background:none;color:var(--mut);font:inherit;font-size:12px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+nav button span{font-size:22px;line-height:1}
+nav button.on{color:var(--acc);background:var(--soft);font-weight:800}
+.quote{text-align:center;color:var(--mut);font-style:italic;margin:18px 8px}
+.warn{color:var(--warn)}
+</style></head>
+<body><main id="app"></main><nav id="nav"></nav>
+<script>
+var app=document.getElementById("app"),nav=document.getElementById("nav");
+var tab="home",day=0,cat="All",ld="",flash=false,store={};
+try{store=JSON.parse(localStorage.getItem("mouna-plan-log")||"{}")}catch(e){store={}}
+function save(){try{localStorage.setItem("mouna-plan-log",JSON.stringify(store))}catch(e){}}
+function key(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function today(){return key(new Date())}
+function ent(k){return store[k]||(store[k]={})}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+ld=today();
+
+var C=[["lemon","Warm lemon water first thing (if it suits you)"],["steps","7–8k steps, with a 5–7 min walk after meals"],["protein","Protein in every meal"],["meals","No skipped meals, regular timings"],["veg","Veggies at 2+ meals (3–4 kinds in the kitchen)"],["water","Water through the day, finish the bottle"],["move","Today’s workout done (a bad one beats a no-show)"],["sleep","In bed before 12 am for 7–8 hours"]];
+var R=["Strength training 3–4 times a week","Steps: 7–8k every day, 10k on active recovery day","Eat enough: no extreme dieting, no long fasting","Fried food and sugar at 50% of your usual","Warm up first; stop if you feel pain or strain","Plan over mood, always"];
+
+var D=[
+{n:"Day 1: Upper body",c:"Start with 10 min incline walk",e:[["Shoulder press","3 × 12–16","Can be done seated","dumbbell shoulder press"],["Lateral raise","3 × 8–12","Soft bend in elbows, lean slightly forward","dumbbell lateral raise"],["Lat pulldown","3 × 8–12","","lat pulldown"],["Push-ups","3 × 14–16","Knee, wall or negative push-ups if needed; resistance band around elbows for support","push up"],["Tricep kickbacks","3 × 12–16","Hinge forward, elbows locked at your waist","dumbbell tricep kickback"],["Bicep curl","3 × 12–16","Hold at 90° at the end of the set","dumbbell bicep curl"]]},
+{n:"Day 2: Lower body",c:"Start with 10 min cycling. Use a heavier set of dumbbells.",e:[["Reverse lunges","3 × 10–14","Each leg","dumbbell reverse lunge"],["Squats","3 × 16–20","Dumbbells on shoulders","dumbbell goblet squat"],["Calf raises","3 × 20","Dumbbells on shoulders","dumbbell calf raise"],["Wall sit","3 × 30 sec","Hold","wall sit"]]},
+{n:"Day 3: Full body",c:"Start with 10 min cross trainer or stair master",e:[["Chest press","3 × 12–16","","dumbbell chest press"],["Bent-over dumbbell row","3 × 12–16","","bent over dumbbell row"],["Squat to dumbbell press","3 × 12–16","Dumbbells on shoulders, press as you stand up","dumbbell squat to press thruster"],["Sumo squats","3 × 12–16","End with pulses","dumbbell sumo squat"],["Leg raises","3 × 20","Don’t touch the ground when heels come down","lying leg raise"],["Plank","2 × 30–45 sec","Hold","plank"]]},
+{n:"Day 4: Core and strengthening (optional)",c:"Finish with 10–15 min incline walk",e:[["Narrow-to-wide squat","2 × 20","Side to side","narrow to wide squat"],["Supermans","3 × 10 sec hold","","superman exercise"],["Cat-cow","3 × 10 sec hold","","cat cow stretch"],["Cobra to child’s pose","3 × 5 sec each","","cobra to child pose"],["Dumbbell glute bridge hold","4 × 10 sec hold","","dumbbell glute bridge"]]}];
+
+var M=[
+{c:"Breakfast",n:"Protein smoothie",k:"300",p:"25–28",i:["1 scoop whey protein","1 cup (200 ml) unsweetened almond or toned milk","½ banana or a small bowl of berries","1 tsp chia or flax seeds"],h:"Blend for 30 seconds. Drink right away."},
+{c:"Breakfast",n:"Moong dal chilla with paneer",k:"320",p:"22–25",i:["¼ cup (about 50 g) moong dal, soaked 3–4 hours","50 g paneer, crumbled","Onion, green chilli, coriander (2 tbsp, chopped)","Salt and a pinch of turmeric","¾ cup (150–180 ml) curd on the side","Oil spray for the tawa"],h:"Grind the dal to a batter. Spread thin on a non-stick tawa to make 2 chillas, add the paneer and veg, fold, and cook both sides."},
+{c:"Breakfast",n:"Egg or paneer bhurji with toast",k:"380",p:"22–24",i:["3 eggs (or 100–120 g paneer, crumbled)","1 small tomato and ½ onion, chopped","Salt, pepper, pinch of turmeric","1 tsp oil","2 slices whole wheat bread"],h:"Soften the onion and tomato in the oil, add eggs or paneer, stir until set, season. Serve with toast."},
+{c:"Breakfast",n:"Overnight oats",k:"450",p:"20",i:["⅓ cup (30 g) oats","½ cup (about 120 g) Greek yogurt","½ cup milk","1 small fruit, chopped","1 tbsp unsweetened muesli","5–7 nuts"],h:"Mix oats, yogurt and milk in a jar the night before and chill. Top with fruit, muesli and nuts in the morning."},
+{c:"Lunch & dinner",n:"Rice, dal and sabzi plate",k:"450–500",p:"20–25",i:["100–130 g cooked rice (up to 1 fist)","¾ cup (150 ml) dal","1–2 cups sabzi, generous","¾ cup curd or 1 cup buttermilk","Cucumber, carrot or radish salad","1 tsp oil or ghee for cooking"],h:"Build the plate: half veg, a quarter protein, a quarter carbs."},
+{c:"Lunch & dinner",n:"Chicken tikka",k:"300",p:"42",i:["150 g chicken","2 tbsp hung curd","1 tsp ginger-garlic paste","½ tsp chilli powder, ¼ tsp turmeric, ½ tsp garam masala","Juice of ½ lemon, salt","1 tsp oil"],h:"Marinate at least 30 minutes. Air-fry or grill until cooked through (about 12–15 min). Serve with 1–2 rotis and salad."},
+{c:"Lunch & dinner",n:"Chicken pepper fry",k:"300",p:"40",i:["150 g chicken, cubed","½ onion, sliced","8–10 curry leaves","½ tsp black pepper","1 tsp ginger-garlic paste","¼ tsp turmeric, ½ tsp chilli powder, salt","1 tsp oil"],h:"Sauté the onion and curry leaves in the oil, add the paste and spices, then the chicken. Cook covered until done and dry."},
+{c:"Lunch & dinner",n:"Masala fish",k:"250",p:"32",i:["150 g fish fillet","¼ tsp turmeric, ½ tsp chilli powder, ½ tsp coriander powder","Juice of ½ lemon, salt","1 tsp oil"],h:"Marinate 15 minutes. Pan-sear 3–4 minutes a side. Serve with veg and 1 roti."},
+{c:"Lunch & dinner",n:"Paneer veg stir-fry",k:"350",p:"25–28",i:["100–120 g paneer, cubed","1½ cups palak, beans, mushroom or broccoli","2 garlic cloves, minced","½ tsp black pepper, ½ tsp chilli flakes, salt","1 tsp oil","1 roti or 1–2 slices bread"],h:"Sear the paneer, set aside, stir-fry the garlic and veg on high heat, return the paneer and season."},
+{c:"Lunch & dinner",n:"Egg scramble plate",k:"300–330",p:"22–24",i:["3 eggs (or 2 whole + 2 whites)","1 cup mixed palak, mushroom, carrot, beans","1 tsp oil","Salt and pepper"],h:"Cook the veg in the oil until soft, pour in the beaten eggs and scramble."},
+{c:"Lunch & dinner",n:"Soya chunks special",k:"330",p:"22–24",i:["⅓ cup (about 30 g) dry soya chunks","1 cup mixed veg","1 small onion","½ tsp masala, salt","1 tsp oil","1 roti and a cucumber salad"],h:"Soak the chunks in hot water 10 minutes and squeeze dry. Sauté with the onion, veg and masala."},
+{c:"Snacks",n:"Paneer snack",k:"150–180",p:"10–12",i:["80–100 g paneer","Masala to taste"],h:"Pan-toast or eat as is with your favourite masala."},
+{c:"Snacks",n:"Protein drink",k:"120",p:"12–14",i:["½ scoop whey","1 glass water"],h:"Shake well. Good after a workout."},
+{c:"Snacks",n:"Beetroot curd bowl",k:"150",p:"10",i:["½ cup thick curd","½ small beetroot, chopped","Few roasted nuts and 1 tbsp raisins","1 tbsp corn flakes for crunch"],h:"Mix and top with corn flakes just before eating."},
+{c:"Snacks",n:"Hot chocolate",k:"130",p:"9",i:["1 cup skimmed milk","2 cubes 70% dark chocolate","No added sugar"],h:"Warm the milk, melt in the chocolate, stir."},
+{c:"Snacks",n:"Roasted chana or fruit with nuts",k:"130–150",p:"4–7",i:["1 small bowl roasted chana, or","1 fruit with 5–7 almonds"],h:"Eat just enough to take the edge off, not to feel full."}];
+
+function home(){var k=today(),e=store[k]||{},ch=e.checks||{},n=C.filter(function(x){return ch[x[0]]}).length,st=+e.steps||0;
+return '<h1>Hi Mouna</h1><p class="mut">'+new Date().toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"})+'</p>'+
+'<div class="hero"><b>'+n+'</b><span>of '+C.length+' done today</span><div class="bar"><i style="width:'+(n/C.length*100)+'%"></i></div></div>'+
+'<div class="card"><h2>Today’s must-dos</h2>'+C.map(function(x){return '<label class="chk"><input type="checkbox" data-chk="'+x[0]+'"'+(ch[x[0]]?' checked':'')+'><span>'+x[1]+'</span></label>'}).join("")+'</div>'+
+'<div class="card"><div class="row"><h2>Steps today</h2><span class="mut">'+st.toLocaleString()+' / 7,500</span></div><div class="bar"><i style="width:'+Math.min(100,st/75)+'%"></i></div><p class="mut">Add your steps in the Log tab.</p></div>'+
+'<div class="card"><h2>Non-negotiables</h2><ul>'+R.map(function(x){return '<li>'+x+'</li>'}).join("")+'</ul></div>'+
+'<p class="quote">A bad workout is always better than a no-show.</p>'}
+
+function work(){var d=D[day];
+return '<h1>Workouts</h1><div class="pills">'+D.map(function(x,i){return '<button class="pill'+(i==day?' on':'')+'" data-day="'+i+'">Day '+(i+1)+'</button>'}).join("")+'</div>'+
+'<div class="card"><h2>'+d.n+'</h2><p class="mut">'+d.c+'</p>'+d.e.map(function(x){var q=encodeURIComponent(x[3]);
+return '<div class="ex"><div class="row"><b>'+x[0]+'</b><span class="chip">'+x[1]+'</span></div>'+(x[2]?'<div class="mut">'+x[2]+'</div>':'')+'<a href="https://www.youtube.com/results?search_query='+q+'+form" target="_blank" rel="noopener">Watch demo</a><a href="https://www.google.com/search?tbm=isch&q='+q+'" target="_blank" rel="noopener">See images</a></div>'}).join("")+'</div>'+
+'<div class="card"><h2>Squat form (Day 2 and Day 3)</h2><svg viewBox="0 0 320 235" style="width:100%;height:auto" role="img" aria-label="Side view of a standing figure and a figure at the bottom of a squat"><g style="stroke:var(--ink);fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"><line x1="20" y1="190" x2="300" y2="190" style="stroke:var(--line)"/><circle cx="80" cy="30" r="12"/><line x1="80" y1="44" x2="80" y2="105"/><polyline points="80,105 80,148 80,190 96,190"/><polyline points="80,56 94,74 88,54" style="stroke:var(--acc)"/><circle cx="252" cy="62" r="12"/><line x1="212" y1="125" x2="244" y2="76"/><polyline points="212,125 256,128 246,188 270,188"/><polyline points="244,78 258,96 252,76" style="stroke:var(--acc)"/></g><g style="fill:var(--ink);font-size:13px;text-anchor:middle"><text x="80" y="214">1. Stand tall</text><text x="235" y="214">2. Hips back and down</text><text x="160" y="231" style="fill:var(--mut)">Chest up, knees over toes, heels down</text></g></svg></div>'+
+'<div class="card"><h2>Make it harder over time</h2><p>Each week, add a rep, slow the tempo, add pulses, or go up to a slightly heavier dumbbell. Stop if you feel pain.</p></div>'+
+'<details class="card" open><summary><b>Warm-up (before every workout, about 5 min)</b></summary><ul><li><b>Neck half circles:</b> 5 forward, 5 back. Slow, chin toward chest, ear toward shoulder.</li><li><b>Arm circles:</b> 10 each way. Arms straight out, start small and get bigger.</li><li><b>Hip circles:</b> 10 each way. Hands on hips, big slow circles.</li><li><b>Reverse lunge and pulse:</b> 8 each side. Step back, lower, pulse twice, stand up.</li><li><b>Squats and reach:</b> 20. Sit hips back, reach arms overhead as you stand.</li><li><b>Jumping jacks:</b> 30. Low impact: step one foot out at a time.</li><li><b>Ankle and wrist rotations:</b> 8 each side.</li></ul></details>'+
+'<details class="card" open><summary><b>Cool-down stretches (after every workout, about 5 min)</b></summary><ul><li><b>Long lunge stretch:</b> 10 sec each leg, twice. Back knee down, hips forward.</li><li><b>Supermans:</b> 5 sec × 3. Face down, lift arms and legs together.</li><li><b>Cobra pose:</b> 5 sec × 3. Hands under shoulders, press chest up, hips stay down.</li><li><b>Knee to chest:</b> 5 sec × 4. On your back, hug one knee in.</li><li><b>Pigeon pose:</b> 10 sec each leg, twice. Front shin across, back leg straight, fold forward.</li></ul><p class="mut">Breathe slowly. You should feel a gentle pull, never pain.</p></details>'+
+'<div class="card"><h2>Day 5: Active recovery</h2><p>Hit 10k steps. Walk 2 min fast, 2 min normal speed, repeat 8 times.</p></div>'}
+
+function meal(){var cats=["All","Breakfast","Lunch & dinner","Snacks"],l=M.filter(function(x){return cat=="All"||x.c==cat});
+return '<h1>Meals</h1><div class="card"><h2>Portion guide</h2><ul><li>Protein: one palm (100–120 g paneer, chicken or fish)</li><li>Carbs: one fist (100–130 g cooked rice, or 1½–2 rotis)</li><li>Vegetables: two fists or more</li><li>Oil or ghee: about 1 tsp per meal</li></ul><p class="mut">Plate = half veg, a quarter protein, a quarter carbs. Chicken and fish quantities come from your plan; the rest are approximate, so adjust to hunger.</p></div>'+
+'<div class="pills">'+cats.map(function(c){return '<button class="pill'+(c==cat?' on':'')+'" data-cat="'+c+'">'+c+'</button>'}).join("")+'</div>'+
+l.map(function(x){return '<details class="card"><summary><b>'+x.n+'</b><span class="mut">'+x.k+' kcal, '+x.p+' g protein</span></summary><b>Ingredients</b><ul>'+x.i.map(function(i){return '<li>'+i+'</li>'}).join("")+'</ul><b>Method</b><p>'+x.h+'</p></details>'}).join("")}
+
+var WO=["","Rest","Day 1: Upper","Day 2: Lower","Day 3: Full body","Day 4: Core","Day 5: Active recovery"];
+function log(){var e=store[ld]||{},ks=Object.keys(store).filter(function(k){return store[k].steps||store[k].workout||store[k].kcal}).sort().reverse().slice(0,14);
+var wk=new Date();wk.setDate(wk.getDate()-6);var wkk=key(wk),rec=Object.keys(store).filter(function(k){return k>=wkk&&k<=today()}),sd=rec.filter(function(k){return +store[k].steps>0}),avg=sd.length?Math.round(sd.reduce(function(a,k){return a+ +store[k].steps},0)/sd.length):0,lifts=rec.filter(function(k){return /^Day [1-4]/.test(store[k].workout||"")}).length;
+function f(id,l,ph){return '<label class="fld"><span>'+l+'</span><input id="'+id+'" type="number" inputmode="decimal" placeholder="'+ph+'" value="'+(e[id]===undefined?"":e[id])+'"></label>'}
+return '<h1>Daily log</h1><div class="card"><div class="row"><b>Last 7 days</b><span class="chip">'+lifts+' lifting days</span></div><p class="mut">Average steps: '+avg.toLocaleString()+'</p></div>'+
+'<div class="card"><label class="fld"><span>Date</span><input id="date" type="date" value="'+ld+'" data-date="1"></label>'+
+'<label class="fld"><span>Workout</span><select id="workout">'+WO.map(function(w){return '<option'+((e.workout||"")==w?' selected':'')+' value="'+w+'">'+(w||"Choose")+'</option>'}).join("")+'</select></label>'+
+'<div class="g2">'+f("steps","Steps","7500")+f("water","Water (glasses)","8")+f("protein","Protein (g)","80–90 min")+f("kcal","Calories","1700–1800")+f("sleep","Sleep (hours)","7–8")+f("weight","Weight (kg)","optional")+'</div>'+
+'<label class="fld"><span>Notes</span><textarea id="notes" rows="3" placeholder="Weights used, how you felt, pain or strain">'+esc(e.notes||"")+'</textarea></label>'+
+'<button class="btn" data-save="1">'+(flash?"Saved":"Save today’s log")+'</button></div>'+
+(ks.length?'<div class="card"><h2>History</h2>'+ks.map(function(k){var s=store[k];return '<button class="hist" data-load="'+k+'"><b>'+k+'</b> <span class="mut">'+[s.workout,s.steps?(+s.steps).toLocaleString()+" steps":"",s.protein?s.protein+" g protein":""].filter(Boolean).join(", ")+'</span></button>'}).join("")+'</div>':'<p class="mut">Your saved days will show up here. They stay on this device.</p>')}
+
+function render(){var T=[["home","🏠","Home"],["work","🏋️","Workouts"],["meal","🍽️","Meals"],["log","📝","Log"]];
+nav.innerHTML=T.map(function(t){return '<button data-tab="'+t[0]+'" class="'+(t[0]==tab?'on':'')+'"><span>'+t[1]+'</span>'+t[2]+'</button>'}).join("");
+app.innerHTML=({home:home,work:work,meal:meal,log:log})[tab]();flash=false}
+
+document.addEventListener("click",function(ev){var t=ev.target.closest("button,summary");if(!t)return;var d=t.dataset;
+if(d.tab){tab=d.tab;render();window.scrollTo(0,0)}
+else if(d.day!==undefined){day=+d.day;render()}
+else if(d.cat){cat=d.cat;render()}
+else if(d.load){ld=d.load;render();window.scrollTo(0,0)}
+else if(d.save){var e=ent(ld);["steps","water","protein","kcal","sleep","weight"].forEach(function(id){var v=document.getElementById(id).value;if(v==="")delete e[id];else e[id]=+v});
+e.workout=document.getElementById("workout").value;e.notes=document.getElementById("notes").value;save();flash=true;render()}});
+document.addEventListener("change",function(ev){var t=ev.target;
+if(t.dataset.chk){var e=ent(today());e.checks=e.checks||{};e.checks[t.dataset.chk]=t.checked;save();render()}
+else if(t.dataset.date&&t.value){ld=t.value;render()}});
+render();
+</script></body></html>
